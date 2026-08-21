@@ -28,6 +28,8 @@ SprintDesk is a production-ready Kanban sprint dashboard built as part of a tech
 - Node.js (v18 or higher recommended)
 - npm or yarn
 
+> **Note on Environment Variables**: This application consumes public, open-source APIs (DummyJSON, JSONPlaceholder) and a local mock JSON database. Therefore, no `.env` files or secure API keys are required to run this project locally.
+
 ### Installation
 
 1. Clone the repository:
