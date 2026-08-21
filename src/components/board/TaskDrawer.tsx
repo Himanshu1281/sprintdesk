@@ -7,6 +7,7 @@ import { X, Trash } from '../ui/Icons'
 import { useBoardStore } from '../../store/useBoardStore'
 import { useToast } from '../ui/useToast'
 import { Modal } from '../ui/Modal'
+import mockData from '../../data/mock-data.json'
 
 interface TaskDrawerProps {
   task: Task | null;
@@ -109,6 +110,24 @@ export function TaskDrawer({ task, onClose }: TaskDrawerProps) {
                   />
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Assignee</label>
+                  <Select 
+                    value={formData.assigneeId?.toString()} 
+                    onChange={(e) => setFormData({ ...formData, assigneeId: parseInt(e.target.value) })}
+                    options={mockData.users.map(u => ({ label: `${u.name} (${u.id})`, value: u.id.toString() }))}
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium mb-1 block">Due Date</label>
+                  <Input 
+                    type="date"
+                    value={formData.dueDate || ''}
+                    onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
+                  />
+                </div>
+              </div>
               <div className="flex justify-end gap-2 pt-4">
                 <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
                 <Button onClick={handleSave}>Save Changes</Button>
@@ -127,7 +146,9 @@ export function TaskDrawer({ task, onClose }: TaskDrawerProps) {
                 <div className="font-medium capitalize">{task.priority}</div>
                 
                 <div className="text-muted-foreground">Assignee</div>
-                <div className="font-medium">User {task.assigneeId}</div>
+                <div className="font-medium">
+                  {mockData.users.find(u => u.id === task.assigneeId)?.name} ({task.assigneeId})
+                </div>
                 
                 <div className="text-muted-foreground">Due Date</div>
                 <div className="font-medium">{task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'None'}</div>

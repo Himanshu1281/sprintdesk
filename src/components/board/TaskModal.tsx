@@ -6,6 +6,7 @@ import { Select } from '../ui/Select'
 import { Modal } from '../ui/Modal'
 import { useBoardStore } from '../../store/useBoardStore'
 import { useToast } from '../ui/useToast'
+import mockData from '../../data/mock-data.json'
 
 interface TaskModalProps {
   isOpen: boolean;
@@ -98,14 +99,7 @@ export function TaskModal({ isOpen, onClose }: TaskModalProps) {
             <Select 
               value={formData.assigneeId?.toString()} 
               onChange={(e) => setFormData({ ...formData, assigneeId: parseInt(e.target.value) })}
-              options={[
-                { label: 'Emily Johnson', value: '1' },
-                { label: 'Michael Williams', value: '2' },
-                { label: 'Sarah Brown', value: '3' },
-                { label: 'David Miller', value: '4' },
-                { label: 'Jessica Davis', value: '5' },
-                { label: 'Daniel Wilson', value: '6' },
-              ]}
+              options={mockData.users.map(u => ({ label: `${u.name} (${u.id})`, value: u.id.toString() }))}
             />
           </div>
           <div>

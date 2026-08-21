@@ -21,6 +21,7 @@ import { Button } from '../components/ui/Button'
 import { Plus } from '../components/ui/Icons'
 import { useToast } from '../components/ui/useToast'
 import { Select } from '../components/ui/Select'
+import mockData from '../data/mock-data.json'
 
 const COLUMNS: { id: Task['status']; title: string }[] = [
   { id: 'backlog', title: 'Backlog' },
@@ -129,9 +130,9 @@ export function Board() {
             onChange={(e) => setAssigneeFilter(e.target.value)}
             options={[
               { label: 'All Assignees', value: 'all' },
-              ...Array.from(new Set(tasks.map(t => t.assigneeId))).map(id => ({
-                label: `User ${id}`,
-                value: id.toString()
+              ...mockData.users.map(u => ({
+                label: `${u.name} (${u.id})`,
+                value: u.id.toString()
               }))
             ]}
           />
