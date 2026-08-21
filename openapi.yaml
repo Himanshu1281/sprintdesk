@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: SprintDesk API
+  description: API Documentation for SprintDesk, including external Authentication services (DummyJSON), Notification Polling (JSONPlaceholder), and simulated backend entities (Tasks, Users).
+  version: 1.0.0
+servers:
+  - url: https://dummyjson.com
+    description: DummyJSON Authentication Server
+  - url: https://jsonplaceholder.typicode.com
+    description: JSONPlaceholder Notification Server
+  - url: http://localhost:5173/api
+    description: Simulated Local Backend (mock-data.json)
+paths:
+  /auth/login:
+    post:
+      summary: Authenticate user
+      description: Logs in a user and returns an access and refresh token.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: emilys
+                password:
+                  type: string
+                  example: emilyspass
+                expiresInMins:
+                  type: integer
+                  example: 30
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+                  id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  image:
+                    type: string
+        '400':
+          description: Invalid credentials
+  /auth/refresh:
+    post:
+      summary: Refresh authentication token
+      description: Generates a new access token using a valid refresh token.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refreshToken:
+                  type: string
+                expiresInMins:
+                  type: integer
+                  example: 30
+      responses:
+        '200':
+          description: Successfully refreshed token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+        '401':
+          description: Token expired or invalid
+  /posts:
+    get:
+      summary: Poll for new notifications
+      description: Fetches a simulated list of recent posts/notifications.
+      tags:
+        - Notifications
+      parameters:
+        - in: query
+          name: _limit
+          schema:
+            type: integer
+          description: Limit the number of returned notifications.
+          example: 5
+      responses:
+        '200':
+          description: A list of notifications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    title:
+                      type: string
+                    body:
+                      type: string
+  /tasks:
+    get:
+      summary: Get sprint tasks
+      description: Fetches the Kanban board tasks for the current active sprints. (Currently simulated via mock-data.json)
+      tags:
+        - Board
+      responses:
+        '200':
+          description: A list of sprint tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+  /users:
+    get:
+      summary: Get workspace users
+      description: Fetches the list of assignable users for the sprint board.
+      tags:
+        - Board
+      responses:
+        '200':
+          description: A list of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [backlog, in-progress, review, done]
+        priority:
+          type: string
+          enum: [low, medium, high]
+        assigneeId:
+          type: integer
+        dueDate:
+          type: string
+          format: date
+        sprintId:
+          type: integer
+        order:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        avatar:
+          type: string
+          format: uri
