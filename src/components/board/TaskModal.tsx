@@ -22,6 +22,7 @@ export function TaskModal({ isOpen, onClose }: TaskModalProps) {
     status: 'backlog',
     priority: 'medium',
     assigneeId: 1,
+    dueDate: '',
     sprintId: 3,
   })
 
@@ -37,6 +38,7 @@ export function TaskModal({ isOpen, onClose }: TaskModalProps) {
       status: 'backlog',
       priority: 'medium',
       assigneeId: 1,
+      dueDate: '',
       sprintId: 3,
     })
     onClose()
@@ -87,6 +89,31 @@ export function TaskModal({ isOpen, onClose }: TaskModalProps) {
                 { label: 'Medium', value: 'medium' },
                 { label: 'High', value: 'high' },
               ]}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium mb-1 block">Assignee</label>
+            <Select 
+              value={formData.assigneeId?.toString()} 
+              onChange={(e) => setFormData({ ...formData, assigneeId: parseInt(e.target.value) })}
+              options={[
+                { label: 'Emily Johnson', value: '1' },
+                { label: 'Michael Williams', value: '2' },
+                { label: 'Sarah Brown', value: '3' },
+                { label: 'David Miller', value: '4' },
+                { label: 'Jessica Davis', value: '5' },
+                { label: 'Daniel Wilson', value: '6' },
+              ]}
+            />
+          </div>
+          <div>
+            <label className="text-sm font-medium mb-1 block">Due Date</label>
+            <Input 
+              type="date"
+              value={formData.dueDate || ''}
+              onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
             />
           </div>
         </div>
