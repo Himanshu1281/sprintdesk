@@ -62,3 +62,15 @@ SprintDesk is a production-ready Kanban sprint dashboard built as part of a tech
 To access the dashboard, you can use the default DummyJSON credentials:
 - **Username:** `emilys`
 - **Password:** `emilyspass`
+
+## Assumptions and Limitations
+
+### Assumptions
+- **Modern Browsers:** The application assumes usage on a modern web browser that fully supports CSS variables and ES6+ JavaScript features.
+- **External API Reliance:** It relies on an active internet connection to interact with the DummyJSON (Authentication) and JSONPlaceholder (Notifications) APIs. It assumes these services remain available and maintain their current data structures.
+- **Local State Management:** For the purpose of this demonstration, Kanban board data and task states are managed locally rather than persisting to a remote database.
+
+### Limitations
+- **Mock Backends & Rate Limits:** Because the app utilizes public mock APIs, it is subject to their performance, rate limits, and uptime.
+- **Simulated Real-time Features:** Notifications are simulated via short polling instead of WebSockets. While functional for demonstration and optimized to pause when the tab is hidden, it is not the optimal approach for a true real-time, high-traffic production application.
+- **Data Persistence:** Changes made to the Kanban board, such as creating new tasks or moving existing ones, are stored locally and will reset or be lost depending on the exact local state mechanism used (e.g., page refresh or cache clearing), as there is no real persistent backend database attached.
